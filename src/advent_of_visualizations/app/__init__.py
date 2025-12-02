@@ -1,0 +1,1 @@
+from advent_of_visualizations.app.advent_of_visualizations import run

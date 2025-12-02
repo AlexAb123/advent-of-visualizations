@@ -1,0 +1,30 @@
+/* Main layout */
+Horizontal {
+    height: 90%;
+}
+
+/* Playback controls sidebar */
+PlaybackControls {
+    width: 30;
+    padding: 1 2;
+}
+
+PlaybackControls #title {
+    text-style: bold;
+    color: cyan;
+    margin-bottom: 1;
+}
+
+PlaybackControls #status {
+    margin-bottom: 1;
+}
+
+PlaybackControls #speed-indicator {
+    color: #ff4d00ff;
+    color: #9dff00ff;
+}
+
+/* Puzzle widget */
+Day01 {
+    width: 1fr;
+}
