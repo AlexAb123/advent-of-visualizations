@@ -5,7 +5,7 @@ from rich.panel import Panel
 from rich.table import Table
 from textual.reactive import reactive
 
-from advent_of_visualizations.puzzles.base_puzzle import BasePuzzle
+from advent_of_visualizations.visualizations.base_puzzle import BasePuzzle
 
 
 class Day01(BasePuzzle):

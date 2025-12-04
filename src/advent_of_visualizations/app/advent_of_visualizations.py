@@ -4,9 +4,9 @@ from textual.app import App, ComposeResult
 from textual.containers import Horizontal, Vertical
 from textual.widgets import Footer, Header
 
-from advent_of_visualizations.app.controls import PlaybackControls
-from advent_of_visualizations.puzzles.base_puzzle import BasePuzzle
+from advent_of_visualizations.app.playback_controls import PlaybackControls
 from advent_of_visualizations.visualizations.aoc2024.day01 import Day01
+from advent_of_visualizations.visualizations.base_puzzle import BasePuzzle
 
 
 class AdventOfVisualizations(App):
@@ -16,13 +16,7 @@ class AdventOfVisualizations(App):
 
     BINDINGS = [
         ("q", "quit", "Quit"),
-        ("right, w, d", "step_forward", "Step Forward"),
-        ("left, s, a", "step_backward", "Step Backward"),
         ("r", "reset", "Reset"),
-        ("space", "toggle_play", "Toggle Play"),
-        ("shift+space", "toggle_reverse", "Toggle Reverse"),
-        ("+, =", "increase_speed", "Increase Speed"),
-        ("-, _", "decrease_speed", "Decrease Speed"),
     ]
 
     SPEEDS = [1.0, 2.0, 4.0, 6.0, 10.0]
@@ -35,6 +29,7 @@ class AdventOfVisualizations(App):
             50 90
             12 1203""")
             yield PlaybackControls(self.SPEEDS)
+        yield Footer()
 
     def on_mount(self) -> None:
         """Initialize playback state"""

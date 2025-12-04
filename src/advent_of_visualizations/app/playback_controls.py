@@ -25,9 +25,9 @@ class PlaybackControls(Widget):
         """Update playback status display"""
         status = self.query_one("#status", Static)
         if is_playing:
-            status.update("[#9dff00]▶ Playing[/]")
+            status.update("▶ Playing")
         else:
-            status.update("[#ff4d00ff]⏸ Paused[/]")
+            status.update("⏸ Paused")
 
     def update_speed(self, speed: float) -> None:
         """Update speed display"""
