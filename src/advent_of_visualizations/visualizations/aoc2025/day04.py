@@ -43,9 +43,10 @@ class Day04Visualization(Static):
                     case ".":
                         s += "[dim].[/dim]"
                     case "X":
-                        s += f"[#ff5c0a].[/]"
+                        s += f"[#ff5c0a]x[/]"
                     case "@":
                         s += f"[#6fff00]@[/]"
+            s += "\n"
         return Panel(s)
 
 
@@ -78,6 +79,7 @@ class Day04(Puzzle):
             yield PuzzleStatus()
         yield Footer()
 
+    @override
     def step_forward(self) -> bool:
         if self.is_done:
             return False
@@ -94,12 +96,11 @@ class Day04(Puzzle):
                     new_q.append(adj)
                     self.seen.add(adj)
         self.q = new_q
-        if len(self.q) == 0:
-            self.is_done = True
 
         self.step += 1
-        self.query_one(Day04Visualization).refresh()
-        self.update_status()
+
+        if len(self.q) == 0:
+            self.is_done = True
         return True
 
     @override
@@ -109,3 +110,7 @@ class Day04(Puzzle):
             speed=self.SPEEDS[self.speed_index],
             playing=self.is_playing,
         )
+
+    @override
+    def refresh_visualization(self) -> None:
+        self.query_one(Day04Visualization).refresh()

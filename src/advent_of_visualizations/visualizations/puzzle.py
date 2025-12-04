@@ -21,7 +21,7 @@ class Puzzle(Screen):
         ("r", "reset", "Reset"),
     ]
 
-    SPEEDS = [1.0, 2.5, 5.0, 10.0, 25.0, 50.0, 100.0]
+    SPEEDS = [1.0, 2.5, 5.0, 10.0, 25.0, 50.0, 100.0, 1000.0]
 
     step = reactive(0)
     is_playing = reactive(False)
@@ -53,6 +53,7 @@ class Puzzle(Screen):
         raise NotImplementedError
 
     def watch_step(self) -> None:
+        self.refresh_visualization()
         self.update_status()
 
     def watch_is_playing(self) -> None:
@@ -86,6 +87,7 @@ class Puzzle(Screen):
         self.is_playing = False
         self.is_done = False
         self.setup()
+        self.refresh_visualization()
 
     def action_toggle_play(self) -> None:
         """Toggle auto-play"""
@@ -115,3 +117,7 @@ class Puzzle(Screen):
         if not self.step_forward():
             # Reached the end, stop playing
             self.is_playing = False
+
+    def refresh_visualization(self) -> None:
+        """Override refreshing the vizualization widget"""
+        raise NotImplementedError
