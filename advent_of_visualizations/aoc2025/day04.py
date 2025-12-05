@@ -1,47 +1,68 @@
-def solve(input_path):
-    lines = input_path.open("r").read().strip().split("\n")
+from PIL import Image, ImageColor
+from pathlib import Path
 
-    def get_adjs(r, c, lines):
-        for dr in -1, 0, 1:
-            for dc in -1, 0, 1:
-                if dr == dc == 0:
-                    continue
-                if not (0 <= r + dr < len(lines) and 0 <= c + dc < len(lines[0])):
-                    continue
-                if lines[r + dr][c + dc] != "@":
-                    continue
-                yield (r + dr, c + dc)
+lines = (Path(__file__).parent / "inputs" / "day04.txt").open("r").read().strip().split("\n")
+lines = list(map(list, lines))
 
-    q = []
-    adjs_count = {}
+frames = []
+def render():
+    frame = Image.new("RGB", (len(lines[0]), len(lines)), "#000000")
     for r in range(len(lines)):
         for c in range(len(lines[0])):
-            if lines[r][c] != "@":
-                continue
-            adjs_count[(r, c)] = len(list(get_adjs(r, c, lines)))
-            if adjs_count[(r, c)] < 4:
-                q.append((r, c))
+            match lines[r][c]:
+                case ".":
+                    frame.putpixel((c, r), ImageColor.getrgb("#545454"))
+                case "x":
+                    frame.putpixel((c, r),ImageColor.getrgb("#ff5555"))
+                case "@":
+                    frame.putpixel((c, r),ImageColor.getrgb("#33ff00"))
 
-    part1 = len(q)
-    seen = set(q)
+    scale = 4
+    frame = frame.resize((len(lines) * scale, len(lines[0]) * scale), Image.Resampling.NEAREST)
+    frames.append(frame)
+
+def get_adjs(r, c, lines):
+    for dr in -1, 0, 1:
+        for dc in -1, 0, 1:
+            if dr == dc == 0:
+                continue
+            if not (0 <= r + dr < len(lines) and 0 <= c + dc < len(lines[0])):
+                continue
+            if lines[r + dr][c + dc] != "@":
+                continue
+            yield (r + dr, c + dc)
+
+q = []
+adjs_count = {}
+for r in range(len(lines)):
+    for c in range(len(lines[0])):
+        if lines[r][c] != "@":
+            continue
+        adjs_count[(r, c)] = len(list(get_adjs(r, c, lines)))
+        if adjs_count[(r, c)] < 4:
+            q.append((r, c))
+
+seen = set(q)
+render()
+while q:
+    new_q = []
     while q:
         r, c = q.pop(0)
+        lines[r][c] = "x"
         for adj in get_adjs(r, c, lines):
             if adj in seen:
                 continue
             adjs_count[adj] -= 1
             if adjs_count[adj] < 4:
-                q.append(adj)
+                new_q.append(adj)
                 seen.add(adj)
-    part2 = len(seen)
+    q = new_q
+    render()
 
-    return part1, part2
-
-
-if __name__ == "__main__":
-    from pathlib import Path
-    from time import time
-    start = time()
-    part1, part2 = solve(Path(__file__).parent / "inputs" / "day04.txt")
-    print(f"Part 1: {part1}\nPart 2: {part2}")
-    print(f"Time Taken: {(time() - start) * 1000:.2f} ms")
+frames[0].save(
+    (Path(__file__).parent / "visualizations" / "day04.gif"),
+    save_all=True,
+    append_images=frames[1:],
+    duration=100,
+    loop=1
+)
