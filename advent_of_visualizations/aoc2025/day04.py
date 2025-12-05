@@ -60,7 +60,7 @@ while q:
     render()
 
 frames[0].save(
-    (Path(__file__).parent / "visualizations" / "day04.gif"),
+    Path("docs") / "visualizations" / "2025" / "day04.gif",
     save_all=True,
     append_images=frames[1:],
     duration=100,
