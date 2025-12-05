@@ -85,9 +85,8 @@ frames[0].save(
     save_all=True,
     append_images=frames[1:],
     duration=100,
-    loop=1
+    loop=0
 )
-
 
 min_wave = min(waves.values())
 max_wave = max(waves.values())
