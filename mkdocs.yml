@@ -1,5 +1,7 @@
 site_name: Advent of Visualizations
 site_url: https://alexab123.github.io/advent-of-visualizations/
+repo_url: https://github.com/alexab123/advent-of-visualizations
+repo_name: Advent of Visualizations
 theme:
   name: material
   palette:
