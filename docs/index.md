@@ -6,4 +6,4 @@ Animated visualizations for Advent of Code puzzles.
 
 ### Day 4
 
-![Day 4 Visualization](../advent_of_visualizations/aoc2025/visualizations/day04.gif)
+![Day 4 Visualization](index.md/visualizations/2025/day04.gif)
