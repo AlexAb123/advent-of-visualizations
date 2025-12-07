@@ -24,3 +24,7 @@ build-backend = "hatchling.build"
 
 [tool.pyright]
 typeCheckingMode = "standard"
+ignore = ["__init__.py"]
+
+[tool.ruff.lint]
+ignore = ["ALL"]

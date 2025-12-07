@@ -1,32 +1,14 @@
 from PIL import Image
 from pathlib import Path
-import seaborn as sns
-from matplotlib.colors import Colormap
 import numpy as np
 from time import time
+from utils import get_color, get_cmap
 
 lines = (Path(__file__).parent / "inputs" / "day04.txt").open("r").read().strip().split("\n")
 lines = list(map(list, lines))
 
 
-def get_color(cmap: Colormap, t: float) -> np.ndarray:
-    r, g, b, _ = cmap(t)
-    return np.array([r * 255, g * 255, b * 255], dtype=np.uint8)
 
-def get_color_tuple(cmap: Colormap, t: float):
-    r, g, b, _ = cmap(t)
-    return (int(r * 255), int(g * 255), int(b * 255))
-
-def get_cmap(name) -> Colormap:
-    return sns.color_palette(name, as_cmap=True)
-# Seaborn palettes: rocket, flare, mako, crest, magma, viridis, etc.
-# Try: rocket, flare, mako, crest, magma, viridis, coolwarm
-
-
-# Test it
-#visualize_palette("rocket")
-#visualize_palette("icefire")
-#visualize_palette("mako")
 def solve(data):
 
     lines = data.split("\n")
