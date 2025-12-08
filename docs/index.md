@@ -1,1 +1,1 @@
-Animated visualizations for [Advent of Code](https://adventofcode.com/) puzzles.
+Visualizations [Advent of Code](https://adventofcode.com/) puzzles.
