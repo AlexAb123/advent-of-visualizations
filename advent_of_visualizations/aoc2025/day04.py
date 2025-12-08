@@ -2,7 +2,7 @@ from PIL import Image
 from pathlib import Path
 import numpy as np
 from time import time
-from utils import get_color, get_cmap
+from advent_of_visualizations.utils import get_color, get_cmap
 
 lines = (Path(__file__).parent / "inputs" / "day04.txt").open("r").read().strip().split("\n")
 lines = list(map(list, lines))
@@ -76,7 +76,6 @@ def render(lines, current_wave, waves, rolls, duration, cmap):
             if (r, c) in waves and waves[(r, c)] <= current_wave:
                 cell_wave = waves[(r, c)]
                 age = current_wave - cell_wave
-                duration = 20
                 t = max(0.0, 1.0 - (age / duration))
                 color = get_color(cmap, t)
 
@@ -99,6 +98,8 @@ duration = 30
 start = time()
 for i in range(0, max(waves.values()) + duration):
     frames.append(render(lines, i, waves, rolls, duration, cmap))
+for _ in range(10):
+    frames.append(frames[-1])
 print(f"Rendered in: {time() - start:.2f}s")
 frames[0].save(
     Path("docs") / "visualizations" / "2025" / "day04.gif",
