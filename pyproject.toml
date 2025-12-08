@@ -9,6 +9,8 @@ dependencies = [
   "matplotlib>=3.10.7",
   "numpy>=2.3.5",
   "pillow>=12.0.0",
+  "plotly>=6.5.0",
+  "pyvista>=0.36.0",
   "seaborn>=0.13.2",
 ]
 
@@ -24,7 +26,7 @@ build-backend = "hatchling.build"
 
 [tool.pyright]
 typeCheckingMode = "standard"
-ignore = ["__init__.py"]
+ignore = ["__init__.py", "advent_of_visualizations/aoc2025/day08.py"]
 
 [tool.ruff.lint]
 ignore = ["ALL"]
