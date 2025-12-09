@@ -9,10 +9,10 @@ from pathlib import Path
 from mpl_toolkits.mplot3d.art3d import Line3DCollection
 from math import log2, log10
 
-fig = plt.figure(figsize=(10, 8))
+fig = plt.figure(figsize=(10, 8), dpi=50)
 ax = fig.add_subplot(1, 1, 1, projection='3d')
 
-cmap = get_cmap("viridis")
+cmap = get_cmap("Spectral_r")
 
 data = (Path(__file__).parent/"inputs"/"day08.txt").read_text().strip()
 points = list(map(lambda line: tuple(map(int, line.split(","))), data.split("\n")))
@@ -46,21 +46,32 @@ def union(x, y):
 
 states = []
 circuits = []
+connection_counts = []
 num_circuits = len(points)
+states.append([size[find(p)] for p in points])
+circuits.append(num_circuits)
+connection_counts.append(0)
+skip_frames = 15
 for i, (p1, p2) in enumerate(connections):
-    states.append([size[find(p)] for p in points])
     if union(p1, p2):
         num_circuits -= 1
-    circuits.append(num_circuits)
-
+    if i % skip_frames == 0:
+        states.append([size[find(p)] for p in points])
+        circuits.append(num_circuits)
+        connection_counts.append(i + 1)
     if size[find(p1)] >= len(points):
+        states.append([size[find(p)] for p in points])
+        circuits.append(num_circuits)
+        connection_counts.append(i + 1)
         break
 # Set axis limits upfront
 text = fig.text(0.02, 0.98, "", fontsize=16, verticalalignment='top', color="#FFFFFF")
 line_collections = Line3DCollection([], linewidths=2, linestyle="-", alpha=0.4)
 ax.add_collection(line_collections)
-scatter = ax.scatter(xs, ys, zs, c=colors, s=15, alpha=0.8)
 
+marker_radius = 30
+scatter = ax.scatter(xs, ys, zs, c=colors, s=marker_radius, alpha=0.6, depthshade=True)
+ax.set_box_aspect((1, 1, 1), zoom=1.2)
 bg_color = "#000000"
 fig.patch.set_facecolor(bg_color)
 ax.set_facecolor(bg_color)
@@ -70,33 +81,45 @@ ax.zaxis.pane.set_facecolor(bg_color)
 ax.set_axis_off()
 
 def size_to_color(size):
-    t = ((size) / (len(points))) ** 4
+    x = size / len(points)
+    t = x ** 0.5 * 0.8 + x ** 10 * 0.2
     return cmap(t)
 
+def shorten_line(p1, p2):
+    """Move endpoints inward by radius amount"""
+    p1, p2 = np.array(p1), np.array(p2)
+    direction = p2 - p1                    # Vector from p1 to p2
+    length = np.linalg.norm(direction)     # Length of that vector
+    unit = direction / length              # Same direction, length = 1
+    new_p1 = p1 + unit * marker_radius  # Move p1 toward p2 by radius
+    new_p2 = p2 - unit * marker_radius  # Move p2 toward p1 by radius
+    return new_p1, new_p2
+
 precomputed_colors = [[size_to_color(s) for s in state] for state in states]
+precomputed_segments = [shorten_line(p1, p2) for p1, p2 in connections[:len(states)*skip_frames]]
+
+precomputed_line_colors = []
+precomputed_line_widths = []
+
+for frame in range(len(states)):
+    colors_f = ["#6CE621"] * frame
+    widths_f = [1] * frame
+   
+    precomputed_line_colors.append(colors_f)
+    precomputed_line_widths.append(widths_f)
 
 def update(frame: int):
-    ax.view_init(elev=20, azim=-(frame / 2))
-    text.set_text(f"Connections: {frame}\nCircuits: {circuits[frame]}")
-    line_colors = []
-    line_widths = []
-
-    for i in range(frame):
-        if i == frame - 1:
-            line_colors.append("#7bff00")
-            line_widths.append(3)
-        else:
-            line_colors.append("#A10000")
-            line_widths.append(1)
-            
+    ax.view_init(elev=25, azim=(frame / 2))
+    frame = min(frame, len(states) - 1)
+    text.set_text(f"Connections: {connection_counts[frame]}\nCircuits: {circuits[frame]}")
     scatter.set_color(precomputed_colors[frame])
+    line_collections.set_colors(precomputed_line_colors[frame])
+    line_collections.set_linewidth(precomputed_line_widths[frame])
+    line_collections.set_segments(precomputed_segments[:frame*skip_frames])
 
-    line_collections.set_colors(line_colors)
-    line_collections.set_linewidth(line_widths)
-    line_collections.set_segments([[p1, p2] for p1, p2 in connections[:frame]])
-
-
-ani = FuncAnimation(fig, update, frames=len(states), interval=25)
-print("Saving")
-#ani.save(Path("docs") / "visualizations" / "2025" / "day08.gif", writer='pillow', fps=30)
-plt.show()
+print("Rendering...")
+pause_frames = 50
+ani = FuncAnimation(fig, update, frames=len(states) + pause_frames, interval=50)
+print("Saving...")
+ani.save(Path("docs") / "visualizations" / "2025" / "day08_hd.gif", writer='pillow', fps=30, dpi=100)
+#plt.show()

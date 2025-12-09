@@ -69,7 +69,7 @@ def render(lines, current_wave, waves, rolls, duration, cmap):
     width = len(lines[0]) * cell_size
     height = len(lines) * cell_size
 
-    arr = np.full((height, width, 3), get_color(cmap, 0.0), dtype=np.uint8)
+    arr = np.full((height, width, 3), get_color(cmap(0.0)), dtype=np.uint8)
 
     for r in range(len(lines)):
         for c in range(len(lines[0])):
@@ -77,10 +77,10 @@ def render(lines, current_wave, waves, rolls, duration, cmap):
                 cell_wave = waves[(r, c)]
                 age = current_wave - cell_wave
                 t = max(0.0, 1.0 - (age / duration))
-                color = get_color(cmap, t)
+                color = get_color(cmap(t))
 
             elif (r, c) in rolls:
-                color = get_color(cmap, 1.0)
+                color = get_color(cmap(1.0))
 
             else:
                 continue

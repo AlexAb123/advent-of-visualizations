@@ -27,7 +27,7 @@ def render(timelines, rows, lines, splits, cmap, cell_pattern, split_pattern, ma
                 continue
             t = log10(timelines[(r, c)]) / log10(max_t)
             y, x = r * cell_size, c * cell_size
-            color = get_color(cmap, t)
+            color = get_color(cmap(t))
             arr[y:y+cell_size, x:x+cell_size][cell_pattern] = color
 
     return Image.fromarray(arr)
