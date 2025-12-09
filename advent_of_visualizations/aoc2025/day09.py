@@ -4,37 +4,42 @@ from advent_of_visualizations.utils import get_color, get_cmap, to_pattern, hex_
 from PIL import Image, ImageDraw, ImageFont
 
 inside_pattern = to_pattern("""
-##
-##""",
+###
+###
+###""",
 pad_right=0,
 pad_bottom=0)
 inside_color = hex_to_rgb("#000000")
 
 outside_pattern = to_pattern("""
-##
-##""",
+###
+###
+###""",
 pad_right=0,
 pad_bottom=0)
 outside_color = hex_to_rgb("#091B4F")
 
 red_tile_pattern = to_pattern("""
-##
-##""",
+###
+###
+###""",
 pad_right=0,
 pad_bottom=0)
 red_tile_color = hex_to_rgb("#ff5050")
 
 green_tile_pattern = to_pattern("""
-##
-##""",
+###
+###
+###""",
 pad_right=0,
 pad_bottom=0)
 green_tile_color = hex_to_rgb("#4dff67")
 
 
 rectangle_pattern = to_pattern("""
-##
-##""",
+###
+###
+###""",
 pad_right=0,
 pad_bottom=0)
 invalid_rectangle_color = hex_to_rgb("#ff0000")
@@ -209,7 +214,7 @@ def render_rectangle(background, p1, p2, area, outside, valid):
             
     img = Image.fromarray(arr.astype(np.uint8))
     draw = ImageDraw.Draw(img)
-    font = ImageFont.load_default(size=20)  # or just omit font param
+    font = ImageFont.load_default(size=30)
 
     draw.text((10, 10), f"Area: {area}", fill=(hex_to_rgb("#77ff55" if valid else "#ff4646e1")), font=font)
     return img
