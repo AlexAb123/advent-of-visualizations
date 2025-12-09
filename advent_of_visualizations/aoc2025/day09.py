@@ -125,7 +125,7 @@ cols = max_c + 2 * col_pad # Padding on both left and right
 green_tiles = set()
 red_tiles = set(compressed_points)
 frames.append(render_polygon(red_tiles, green_tiles))
-durations.append(50)
+durations.append(400)
 
 count = 0
 for i in range(len(compressed_points)):
@@ -150,7 +150,7 @@ for i in range(len(compressed_points)):
             durations.append(50)
     
 frames.append(render_polygon(red_tiles, green_tiles))
-durations.append(50)
+durations.append(800)
 
 
 
@@ -178,7 +178,7 @@ while q:
         outside.add(adj)
         inside[ar][ac] = 0
 frames.append(render_floodfill(background, outside))
-durations.append(50)
+durations.append(800)
 
 
 
@@ -225,15 +225,17 @@ for area, (r1, c1), (r2, c2) in rectangles:
         part2 = area
         break
 
-view_rects = view_rects[0:4] + view_rects[-16:]
+valid_rect = view_rects[-1]
+view_rects = [view_rects[i] for i in range(0, len(view_rects), len(view_rects)//20)]
+view_rects[-1] = valid_rect
 for i in range(len(view_rects)):
     print(i, len(view_rects))
     area, (r1, c1), (r2, c2) = view_rects[i]
     valid = i == len(view_rects) - 1
     frames.append(render_rectangle(background, (r1, c1), (r2, c2), area, outside, valid))
-    durations.append(800)
+    durations.append(1000)
 
-durations[-1] = 3200
+durations[-1] = 4000
 duration = 50
 frames[0].save(
     Path("docs") / "visualizations" / "2025" / "day09.gif",
