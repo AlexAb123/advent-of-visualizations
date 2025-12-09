@@ -65,7 +65,6 @@ while q:
 part2 = 0
 for c in range(len(lines[0])):
     part2 += timelines[(len(lines) - 1, c)]
-print(part2)
 # Settings
 pat ="""
 ..##..

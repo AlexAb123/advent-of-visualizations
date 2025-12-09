@@ -15,3 +15,7 @@ def get_plotly_color(rgba):
 def get_cmap(name) -> Colormap:
     """Returns the Seaborn colormap with the given name"""
     return sns.color_palette(name, as_cmap=True)
+
+def hex_to_rgb(hex_color):
+    hex_color = hex_color.lstrip('#')
+    return tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
