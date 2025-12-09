@@ -243,7 +243,7 @@ for i in range(len(view_rects)):
 durations[-1] = 4000
 duration = 50
 frames[0].save(
-    Path("docs") / "visualizations" / "2025" / "day09.gif",
+    Path("docs") / "visualizations" / "2025" / "day09_l.gif",
     save_all=True,
     append_images=frames[1:],
     duration=durations,
